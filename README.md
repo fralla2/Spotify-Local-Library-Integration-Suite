@@ -1,3 +1,4 @@
+````markdown
 # Spotify Local Library Integration Suite
 
 A collection of Python scripts to enhance your Spotify experience by integrating with your local music library. This suite includes tools to automatically follow artists from your local collection and to create intelligent, random playlists on Spotify.
@@ -53,7 +54,7 @@ Both scripts benefit from intelligent caching of your local library's metadata, 
 
 1.  **Clone the repository (or download the scripts):**
     ```bash
-    git clone [https://github.com/fralla2/Spotify-Local-Library-Integration-Suite.git](https://github.com/fralla2/Spotify-Local-Library-Integration-Suite.git)
+    git clone [https://github.com/fralla2/spotify-local-library-integration-suite.git](https://github.com/fralla2/spotify-local-library-integration-suite.git)
     cd spotify-local-library-integration-suite
     ```
 
@@ -165,3 +166,79 @@ This script will scan your local library for artists and attempt to follow them 
 
 ```bash
 python Spotify_FollowArtists.py
+````
+
+### Running Spotify\_GeneratePlaylist.py
+
+This script will generate a new Spotify playlist from a random selection of songs in your local library.
+
+```bash
+python Spotify_GeneratePlaylist.py
+```
+
+### First-time Authentication (for either script):
+
+  * The script will print a URL. Copy and paste this URL into your web browser.
+  * You'll be prompted to log in to Spotify and grant permissions to your application.
+  * After granting permission, you'll be redirected to your `http://127.0.0.1:8888/callback` URI. Copy the *entire URL* from your browser's address bar and paste it back into your terminal when prompted by `spotipy`.
+
+### Observing Progress:
+
+  * If a full local library scan is performed (first run or `--rescan`), you will see progress updates in the terminal, showing the current directory being scanned and the total number of files processed.
+  * The scripts will then proceed with their respective Spotify operations, providing further output.
+
+### Forcing a Full Local Library Rescan
+
+If you've added or removed a significant amount of music from your local library, or if you simply want to refresh the cached data, you can force a full rescan for either script by running it with the `--rescan` argument:
+
+```bash
+python Spotify_FollowArtists.py --rescan
+# OR
+python Spotify_GeneratePlaylist.py --rescan
+```
+
+## How It Works
+
+### Local Music Library Caching (`get_songs_from_local_library_with_cache` function):
+
+  * The script first checks for `local_music_cache.json`.
+  * If found and valid (less than 10% of cached file paths are missing), it loads song metadata directly from this file, skipping the slow file system scan.
+  * If the cache is not found, is invalid, or `--rescan` is used, it performs a full `os.walk` scan of your `MUSIC_LIBRARY_PATH`.
+  * During the scan, it uses `tinytag` to extract `artist`, `title`, and `album` from supported audio files.
+  * After a full scan, the collected data is saved to `local_music_cache.json` for future use.
+
+### Spotify\_FollowArtists.py Logic:
+
+  * Utilizes the common local library scanning and caching mechanism.
+  * Extracts unique artist names from your scanned local library.
+  * Authenticates with Spotify using the `user-follow-modify` scope.
+  * Searches for each unique artist on Spotify using `sp.search()`.
+  * If a strong match is found, it uses `sp.user_follow_artists()` to follow the artist on your Spotify account, handling API batch limits.
+
+### Spotify\_GeneratePlaylist.py Logic:
+
+  * Utilizes the common local library scanning and caching mechanism.
+  * Authenticates with Spotify using the `user-read-private`, `playlist-modify-public`, and `playlist-modify-private` scopes.
+  * Retrieves your Spotify user ID.
+  * Creates a new playlist using `sp.user_playlist_create()`.
+  * Randomly selects songs from the (cached or newly scanned) local library.
+  * For each selected local song, it performs a Spotify search (`sp.search()`) to find the corresponding track on Spotify, prioritizing matches by artist and album.
+  * Adds the found Spotify track URIs to the new playlist in batches of 100 items (`sp.playlist_add_items()`) to adhere to Spotify API limits.
+
+## Limitations and Notes
+
+  * **Spotify Playlist Limit:** Spotify playlists generally have a soft limit of 10,000 tracks. The `Spotify_GeneratePlaylist.py` script will not attempt to add more than this.
+  * **Search Accuracy:** Matching local files to Spotify tracks and artists relies on accurate metadata (artist, title, album) in your local files. Misspellings or variations can lead to tracks/artists not being found or incorrect matches.
+  * **API Rate Limits:** While `spotipy` handles some rate limiting, very large numbers of searches or follow/add operations can still take a significant amount of time due to Spotify's API rate limits.
+  * **Artist Balancing (Requires Implementation in `Spotify_GeneratePlaylist.py`):** The provided code for `Spotify_GeneratePlaylist.py` includes comments for where you would implement the `MAX_SONGS_PER_ARTIST` logic if you choose to. This is not active by default and requires you to uncomment and integrate the suggested code snippet.
+
+## Contributing
+
+Feel free to open issues, submit pull requests, or suggest improvements\!
+
+## License
+
+This project is open-source and available under the [MIT License](https://www.google.com/search?q=LICENSE).
+
+```
+```
