@@ -87,7 +87,7 @@ To use these scripts, you need to register an application with Spotify to get AP
     [http://127.0.0.1:8888/callback](http://127.0.0.1:8888/callback)
     ```
     **Important:** Spotify no longer allows `localhost` for security reasons. You *must* use `127.0.0.1`.
-10. Click **"Add"** next to the URI, then scroll down and click **"Save"`.
+10. Click **"Add"** next to the URI, then scroll down and click **"Save"**.
 
 ## Configuration
 
@@ -166,7 +166,7 @@ This script will scan your local library for artists and attempt to follow them 
 
 ```bash
 python Spotify_FollowArtists.py
-````
+```
 
 ### Running Spotify\_GeneratePlaylist.py
 
