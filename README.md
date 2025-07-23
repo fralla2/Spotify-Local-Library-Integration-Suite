@@ -1,4 +1,3 @@
-````markdown
 # Spotify Local Library Integration Suite
 
 A collection of Python scripts to enhance your Spotify experience by integrating with your local music library. This suite includes tools to automatically follow artists from your local collection and to create intelligent, random playlists on Spotify.
@@ -53,6 +52,7 @@ Both scripts benefit from intelligent caching of your local library's metadata, 
 ## Installation
 
 1.  **Clone the repository (or download the scripts):**
+
     ```bash
     git clone [https://github.com/fralla2/spotify-local-library-integration-suite.git](https://github.com/fralla2/spotify-local-library-integration-suite.git)
     cd spotify-local-library-integration-suite
@@ -60,6 +60,7 @@ Both scripts benefit from intelligent caching of your local library's metadata, 
 
 2.  **Install Python dependencies:**
     It's highly recommended to use a virtual environment:
+
     ```bash
     python -m venv venv
     # On Windows:
@@ -83,9 +84,11 @@ To use these scripts, you need to register an application with Spotify to get AP
 7.  Once your app is created, you'll see your **Client ID** and **Client Secret**. Keep these safe!
 8.  Click **"Edit Settings"** for your newly created app.
 9.  Under **"Redirect URIs"**, add the following URI:
+
     ```
     [http://127.0.0.1:8888/callback](http://127.0.0.1:8888/callback)
     ```
+
     **Important:** Spotify no longer allows `localhost` for security reasons. You *must* use `127.0.0.1`.
 10. Click **"Add"** next to the URI, then scroll down and click **"Save"**.
 
@@ -101,20 +104,24 @@ These variables are likely common to both scripts and should be configured in ea
     ```python
     SPOTIPY_CLIENT_ID = 'YOUR_CLIENT_ID_HERE'
     ```
+
 * **`SPOTIPY_CLIENT_SECRET`**: Your Spotify application's Client Secret.
     ```python
     SPOTIPY_CLIENT_SECRET = 'YOUR_CLIENT_SECRET_HERE'
     ```
+
 * **`SPOTIPY_REDIRECT_URI`**: **Must match the URI you set in the Spotify Developer Dashboard exactly.**
     ```python
     SPOTIPY_REDIRECT_URI = '[http://127.0.0.1:8888/callback](http://127.0.0.1:8888/callback)'
     ```
+
 * **`MUSIC_LIBRARY_PATH`**: The absolute path to your local music library. Use forward slashes or escaped backslashes for Windows paths.
     ```python
     MUSIC_LIBRARY_PATH = 'C:/Users/YourUser/Music' # Example for Windows
     # Or: MUSIC_LIBRARY_PATH = 'C:\\Users\\YourUser\\Music'
     # For macOS/Linux: MUSIC_LIBRARY_PATH = '/Users/youruser/Music'
     ```
+
 * **`CACHE_FILE`**: The name of the JSON file where scanned local music data will be stored.
     ```python
     CACHE_FILE = 'local_music_cache.json'
@@ -133,18 +140,22 @@ These variables are likely common to both scripts and should be configured in ea
     ```python
     PLAYLIST_NAME = "My Random Local Library Jams"
     ```
+
 * **`PLAYLIST_DESCRIPTION`**: A description for your new Spotify playlist.
     ```python
     PLAYLIST_DESCRIPTION = "Randomly generated playlist from my local music library."
     ```
+
 * **`PLAYLIST_PUBLIC`**: Set to `True` if you want the playlist to be public on Spotify, `False` for private.
     ```python
     PLAYLIST_PUBLIC = False
     ```
+
 * **`NUMBER_OF_SONGS_TO_ADD`**: The target number of songs to add to the playlist. Spotify playlists have a soft limit of around 10,000 tracks.
     ```python
     NUMBER_OF_SONGS_TO_ADD = 10000
     ```
+
 * **`MAX_SONGS_PER_ARTIST` (Optional, requires implementation)**: If you want to limit how many songs a single artist can have in the generated playlist to promote diversity, you'll need to uncomment and implement the "Option 1: Basic Artist Quota" logic as discussed in the script.
     ```python
     # MAX_SONGS_PER_ARTIST = 3 # Uncomment and set a value if you implement the artist balancing logic
@@ -153,6 +164,7 @@ These variables are likely common to both scripts and should be configured in ea
 ## Usage
 
 1.  **Activate your virtual environment** (if you created one):
+
     ```bash
     # On Windows:
     .\venv\Scripts\activate
@@ -242,4 +254,3 @@ This project is open-source and available under the [MIT License](https://www.go
 
 ```
 ```
-````
